@@ -10,5 +10,7 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path('favourite/beer/<int:beer_id>/remove/', views.remove_favourite_beer, name='remove_favourite_beer'),
     path('favourite/venue/<int:venue_id>/remove/', views.remove_favourite_venue, name='remove_favourite_venue'),
+    path('venues-by-beer/', views.venues_by_beer, name='venues_by_beer'),
+
 
 ]

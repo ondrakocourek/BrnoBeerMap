@@ -100,3 +100,23 @@ def remove_favourite_venue(request, venue_id):
         fav = get_object_or_404(FavouriteVenue, user=request.user, venue_id=venue_id)
         fav.delete()
     return redirect('user_profile')
+
+def venues_by_beer(request):
+    selected_beer_id = request.GET.get('beer')
+    beers = Beer.objects.all()
+    venues = Venue.objects.all()
+
+    if selected_beer_id:
+        try:
+            selected_beer_id = int(selected_beer_id)
+            venues = venues.filter(beers__id=selected_beer_id)
+        except ValueError:
+            selected_beer_id = None
+
+    context = {
+        'beers': beers,
+        'venues': venues,
+        'selected_beer_id': selected_beer_id,
+    }
+
+    return render(request, 'beerapp/venues_by_beer.html', context)

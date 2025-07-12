@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Filtrovat hospody podle piva</h2>
+
+<form method="get">
+  <select name="beer" onchange="this.form.submit()">
+    <option value="">-- Vyber pivo --</option>
+    {% for beer in beers %}
+      <option value="{{ beer.id }}" {% if beer.id == selected_beer_id %}selected{% endif %}>{{ beer.name }}</option>
+    {% endfor %}
+  </select>
+</form>
+
+<ul>
+  {% for venue in venues %}
+    <li><strong>{{ venue.name }}</strong> – {{ venue.venue_type }}</li>
+  {% empty %}
+    <li>Žádný podnik nečepuje toto pivo.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
