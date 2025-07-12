@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Seznam podniků</h2>
+  <ul>
+    {% for venue in venues %}
+      <li>
+        <a href="{% url 'venue_detail' venue.id %}">{{ venue.name }}</a> – {{ venue.venue_type }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

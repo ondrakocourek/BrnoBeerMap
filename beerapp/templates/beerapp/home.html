@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Brno Beer Map</h1>
+  <p>Objev své oblíbené podniky a piva!</p>
+
+  <ul>
+    {% for venue in venues %}
+      <li>{{ venue.name }} - {{ venue.venue_type }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

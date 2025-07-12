@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Profil uživatele {{ user.username }}</h1>
+
+<h2>Oblíbená piva </h2>
+<ul>
+  {% for fav in favourite_beers %}
+    <li>{{ fav.beer.name }}</li>
+  {% empty %}
+    <li>Žádná oblíbená piva.</li>
+  {% endfor %}
+</ul>
+
+<form method="post">
+  {% csrf_token %}
+  {{ beer_form }}
+  <button type="submit" name="add_beer">Přidat pivo</button>
+</form>
+    <ul>
+  {% for fav in favourite_beers %}
+    <li>
+      {{ fav.beer.name }}
+      <form method="post" action="{% url 'remove_favourite_beer' fav.beer.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Odebrat</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>Žádná oblíbená piva.</li>
+  {% endfor %}
+</ul>
+
+<hr>
+
+<h2>Oblíbené podniky </h2>
+<ul>
+  {% for fav in favourite_venues %}
+    <li>{{ fav.venue.name }}</li>
+  {% empty %}
+    <li>Žádné oblíbené podniky.</li>
+  {% endfor %}
+</ul>
+
+<form method="post">
+  {% csrf_token %}
+  {{ venue_form }}
+  <button type="submit" name="add_venue">Přidat podnik</button>
+</form>
+    <ul>
+  {% for fav in favourite_venues %}
+    <li>
+      {{ fav.venue.name }}
+      <form method="post" action="{% url 'remove_favourite_venue' fav.venue.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Odebrat</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>Žádná oblíbená piva.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

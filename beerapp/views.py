@@ -1,0 +1,102 @@
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Venue, Beer, FavouriteBeer, FavouriteVenue
+from django.contrib.auth.decorators import login_required
+from .forms import RegisterForm
+from django.contrib import messages
+
+def home(request):
+    venues = Venue.objects.all()
+    return render(request, "beerapp/home.html", {"venues": venues})
+
+def beer_list(request):
+    beers = Beer.objects.all()
+    return render(request, "beerapp/beers.html", {"beers": beers})
+
+def venue_list(request):
+    venues = Venue.objects.all()
+    return render(request, "beerapp/venue_list.html", {"venues": venues})
+
+def venue_detail(request, venue_id):
+    venue = get_object_or_404(Venue, pk=venue_id)
+    return render(request, "venue_detail.html", {"venue": venue})
+
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, "user_profile.html", {"user": user})
+
+@login_required
+def user_profile(request):
+    user = request.user
+    favourite_beers = FavouriteBeer.objects.filter(user=user)
+    favourite_venues = FavouriteVenue.objects.filter(user=user)
+
+    if request.method == "POST":
+        if 'add_beer' in request.POST:
+            beer_form = FavouriteBeerForm(request.POST)
+            if beer_form.is_valid():
+                beer = beer_form.cleaned_data['beer']
+                FavouriteBeer.objects.get_or_create(user=user, beer=beer)
+                return redirect('user_profile')
+        elif 'add_venue' in request.POST:
+            venue_form = FavouriteVenueForm(request.POST)
+            if venue_form.is_valid():
+                venue = venue_form.cleaned_data['venue']
+                FavouriteVenue.objects.get_or_create(user=user, venue=venue)
+                return redirect('user_profile')
+    else:
+        beer_form = FavouriteBeerForm()
+        venue_form = FavouriteVenueForm()
+
+    return render(request, "beerapp/user_profile.html", {
+        "favourite_beers": favourite_beers,
+        "favourite_venues": favourite_venues,
+        "beer_form": beer_form,
+        "venue_form": venue_form,
+    })
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Účet byl vytvořen! Můžeš se přihlásit.")
+            return redirect("login")
+    else:
+        form = RegisterForm()
+    return render(request, "beerapp/register.html", {"form": form})
+
+@login_required
+def toggle_favourite_venue(request, venue_id):
+    venue = get_object_or_404(Venue, id=venue_id)
+    fav, created = FavouriteVenue.objects.get_or_create(user=request.user, venue=venue)
+    if not created:
+        fav.delete()
+    return redirect("user_profile")
+
+
+@login_required
+def toggle_favourite_beer(request, beer_id):
+    beer = get_object_or_404(Venue, id=beer_id)
+    fav, created = FavouriteBeer.objects.get_or_create(user=request.user, beer=beer)
+    if not created:
+        fav.delete()
+    return redirect("user_profile")
+
+from .forms import FavouriteBeerForm, FavouriteVenueForm
+from .models import FavouriteBeer, FavouriteVenue
+
+
+@login_required
+def remove_favourite_beer(request, beer_id):
+    if request.method == "POST":
+        fav = get_object_or_404(FavouriteBeer, user=request.user, beer_id=beer_id)
+        fav.delete()
+    return redirect('user_profile')
+
+@login_required
+def remove_favourite_venue(request, venue_id):
+    if request.method == "POST":
+        fav = get_object_or_404(FavouriteVenue, user=request.user, venue_id=venue_id)
+        fav.delete()
+    return redirect('user_profile')
