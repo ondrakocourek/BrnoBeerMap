@@ -3,7 +3,6 @@
 A web application built with Django and PostgreSQL that allows users to explore Brno pubs, filter them by available beers, and manage their favorite venues and beers.
 
 ---
-
 ## Features
 
 - View pubs and breweries in Brno

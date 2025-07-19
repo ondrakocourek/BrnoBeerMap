@@ -4,8 +4,14 @@
   <p><strong>Typ:</strong> {{ venue.venue_type }}</p>
   <p><strong>Adresa:</strong> {{ venue.address }}</p>
   <p><strong>Otevírací doba:</strong> {{ venue.opening_hours }}</p>
-  <p><strong>Piva:</strong> {{ venue.beers.all}}</p>
-  {% if venue.website %}
+  <p><strong>Piva:</strong>
+    {% for beer in venue.beers.all %}
+      {{ beer.name }}{% if not forloop.last %}, {% endif %}
+    {% empty %}
+      Žádná piva
+    {% endfor %}
+  </p>
+{% if venue.website %}
     <p><a href="{{ venue.website }}" target="_blank">Web</a></p>
   {% endif %}
 {% endblock %}
