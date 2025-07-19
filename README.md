@@ -26,7 +26,7 @@ A web application built with Django and PostgreSQL that allows users to explore 
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 1. **Clone the repo**  
    `git clone https://github.com/yourusername/brno-beer-map.git`
