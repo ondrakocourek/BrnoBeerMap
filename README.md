@@ -21,8 +21,7 @@ A web application built with Django and PostgreSQL that allows users to explore 
 - Python 3.12
 - Django 5.x
 - PostgreSQL
-- HTML/CSS
-- JavaScript 
+- HTML/CSS 
 - Pytest
 
 ---
