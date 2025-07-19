@@ -25,5 +25,4 @@ urlpatterns = [
     path("", include("beerapp.urls")),
     path("login/", auth_views.LoginView.as_view(template_name="beerapp/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
-    path("register/", beerapp_views.register, name="register"),
 ]

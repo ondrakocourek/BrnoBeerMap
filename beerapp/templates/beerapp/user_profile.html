@@ -3,13 +3,6 @@
 <h1>Profil uživatele {{ user.username }}</h1>
 
 <h2>Oblíbená piva </h2>
-<ul>
-  {% for fav in favourite_beers %}
-    <li>{{ fav.beer.name }}</li>
-  {% empty %}
-    <li>Žádná oblíbená piva.</li>
-  {% endfor %}
-</ul>
 
 <form method="post">
   {% csrf_token %}
@@ -33,13 +26,6 @@
 <hr>
 
 <h2>Oblíbené podniky </h2>
-<ul>
-  {% for fav in favourite_venues %}
-    <li>{{ fav.venue.name }}</li>
-  {% empty %}
-    <li>Žádné oblíbené podniky.</li>
-  {% endfor %}
-</ul>
 
 <form method="post">
   {% csrf_token %}

@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+
+"Models for database which stores information about BeerType (lager, IPA,...), Beer name, Venues, City districts,..."
 class BeerType(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self):
@@ -47,3 +49,4 @@ class FavouriteBeer(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s favourite beer is: {self.beer.name}"
+

@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'brno_beer_map.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'beer_db',
+        'NAME': 'beermap_db',
         'USER': 'admin',
-        'PASSWORD': 'brnobeermap',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '5432',
     }

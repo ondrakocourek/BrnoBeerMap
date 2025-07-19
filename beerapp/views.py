@@ -4,27 +4,39 @@ from .models import Venue, Beer, FavouriteBeer, FavouriteVenue
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib import messages
+from .forms import FavouriteBeerForm, FavouriteVenueForm
+from .models import FavouriteBeer, FavouriteVenue
 
+
+"Main page"
 def home(request):
     venues = Venue.objects.all()
     return render(request, "beerapp/home.html", {"venues": venues})
 
+"Represents a list of beers"
 def beer_list(request):
     beers = Beer.objects.all()
     return render(request, "beerapp/beers.html", {"beers": beers})
 
+
+"Represents a list of venues"
 def venue_list(request):
     venues = Venue.objects.all()
     return render(request, "beerapp/venue_list.html", {"venues": venues})
 
+"represents a detailed view for venues, consists of type, address, open hours and type of beers served"
 def venue_detail(request, venue_id):
     venue = get_object_or_404(Venue, pk=venue_id)
     return render(request, "venue_detail.html", {"venue": venue})
 
+"""
 def user_profile(request, username):
     user = User.objects.get(username=username)
     return render(request, "user_profile.html", {"user": user})
+"""
 
+
+"user profile with favourite beers and venues, with ability to add or remove"
 @login_required
 def user_profile(request):
     user = request.user
@@ -55,6 +67,8 @@ def user_profile(request):
         "venue_form": venue_form,
     })
 
+
+"registration of new user"
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
@@ -66,6 +80,8 @@ def register(request):
         form = RegisterForm()
     return render(request, "beerapp/register.html", {"form": form})
 
+
+"function to switch status of favourite venue add/or remove depends if exists"
 @login_required
 def toggle_favourite_venue(request, venue_id):
     venue = get_object_or_404(Venue, id=venue_id)
@@ -74,7 +90,7 @@ def toggle_favourite_venue(request, venue_id):
         fav.delete()
     return redirect("user_profile")
 
-
+"function to add/remove favourite beer"
 @login_required
 def toggle_favourite_beer(request, beer_id):
     beer = get_object_or_404(Venue, id=beer_id)
@@ -83,10 +99,8 @@ def toggle_favourite_beer(request, beer_id):
         fav.delete()
     return redirect("user_profile")
 
-from .forms import FavouriteBeerForm, FavouriteVenueForm
-from .models import FavouriteBeer, FavouriteVenue
 
-
+"function for removing favourite beer"
 @login_required
 def remove_favourite_beer(request, beer_id):
     if request.method == "POST":
@@ -94,6 +108,8 @@ def remove_favourite_beer(request, beer_id):
         fav.delete()
     return redirect('user_profile')
 
+
+"function for removing favourite venue"
 @login_required
 def remove_favourite_venue(request, venue_id):
     if request.method == "POST":
@@ -101,6 +117,9 @@ def remove_favourite_venue(request, venue_id):
         fav.delete()
     return redirect('user_profile')
 
+
+
+"represents which venues serves which kind of beer"
 def venues_by_beer(request):
     selected_beer_id = request.GET.get('beer')
     beers = Beer.objects.all()

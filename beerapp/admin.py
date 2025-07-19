@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import BeerType, Beer, CityDistrict, Venue, FavouriteVenue, FavouriteBeer
 
+
+"admin access for classes bellow"
 admin.site.register(BeerType)
 admin.site.register(Beer)
 admin.site.register(CityDistrict)
